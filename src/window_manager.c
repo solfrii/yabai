@@ -8,7 +8,8 @@ extern double g_cv_host_clock_frequency;
 
 static TABLE_HASH_FUNC(hash_wm)
 {
-    return *(uint32_t *) key;
+    uint32_t k = *(uint32_t *) key;
+    return k;
 }
 
 static TABLE_COMPARE_FUNC(compare_wm)
@@ -38,6 +39,8 @@ void window_manager_query_window_rules(FILE *rsp)
 void window_manager_query_windows_for_spaces(FILE *rsp, uint64_t *space_list, int space_count, uint64_t flags)
 {
     TIME_FUNCTION;
+    
+    dummy_flog("Query windows");
 
     int window_count = 0;
     uint32_t *window_list = space_window_list_for_connection(space_list, space_count, 0, &window_count, true);
@@ -47,6 +50,7 @@ void window_manager_query_windows_for_spaces(FILE *rsp, uint64_t *space_list, in
         struct window *window = window_manager_find_window(&g_window_manager, window_list[i]);
         if (window) window_serialize(rsp, window, flags); else window_nonax_serialize(rsp, window_list[i], flags);
         if (i < window_count - 1) fprintf(rsp, ",");
+        dummy_wlog(window, "Queried");
     }
     fprintf(rsp, "]\n");
 }
@@ -1392,6 +1396,7 @@ void window_manager_remove_window(struct window_manager *wm, uint32_t window_id)
 void window_manager_add_window(struct window_manager *wm, struct window *window)
 {
     table_add(&wm->window, &window->id, window);
+    dummy_wlog(window, "Added to WM");
 }
 
 struct application *window_manager_find_application(struct window_manager *wm, pid_t pid)
@@ -2659,7 +2664,7 @@ void window_manager_begin(struct space_manager *sm, struct window_manager *wm)
                 application_destroy(application);
             }
         } else {
-            debug("%s: %s (%d) is not observable, subscribing to activationPolicy changes\n", __FUNCTION__, process->name, process->pid);
+//            debug("%s: %s (%d) is not observable, subscribing to activationPolicy changes\n", __FUNCTION__, process->name, process->pid);
             workspace_application_observe_activation_policy(g_workspace_context, process);
         }
     })

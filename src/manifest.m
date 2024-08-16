@@ -59,6 +59,7 @@
 
 #include "osax/common.h"
 
+#include "dummy.h"
 #include "view.h"
 #include "sa.h"
 #include "event_loop.h"
@@ -76,6 +77,7 @@
 #include "window_manager.h"
 #include "mouse_handler.h"
 
+#include "dummy.c"
 #include "sa.m"
 #include "mission_control.c"
 #include "event_loop.c"

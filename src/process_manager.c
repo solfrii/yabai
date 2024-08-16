@@ -150,6 +150,7 @@ void process_manager_remove_process(struct process_manager *pm, ProcessSerialNum
 void process_manager_add_process(struct process_manager *pm, struct process *process)
 {
     table_add(&pm->process, &process->psn, process);
+    dummy_plog(process, "Added to PM");
 }
 
 #pragma clang diagnostic push

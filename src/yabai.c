@@ -253,12 +253,15 @@ static void parse_arguments(int argc, char **argv)
         } else {
             error("yabai: '%s' is not a valid option!\n", opt);
         }
+      
     }
 }
 
 #ifndef TESTS
 int main(int argc, char **argv)
 {
+    g_verbose = true;
+  
     if (argc > 1) {
         parse_arguments(argc, argv);
     }
